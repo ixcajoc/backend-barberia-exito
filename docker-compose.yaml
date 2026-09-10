@@ -1,0 +1,30 @@
+services:
+  sql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: Barberia_sqlserver2022
+    ports:
+      - "11434:1433"
+    environment:
+      ACCEPT_EULA: "1"
+      MSSQL_SA_PASSWORD: "MyStrongPass123"
+      MSSQL_PID: "Developer"
+    volumes:
+      - sqlserverdata:/var/opt/mssql
+volumes:
+  sqlserverdata:
+# Comandos útiles:
+# Levantar los contenedores en segundo plano:
+#   [nombre archivo compose] up -d
+#   docker-compose up -d
+# Apagar y eliminar contenedores (no borra los volúmenes):
+#   docker-compose down
+# Si ya tenemos SqlServer instalado local, debemos elejir un puerto distinto para esta imagen.
+# 1. Dar de baja el contenedor creado con: docker-compose down -v
+# 2. Levantar el contendor: docker-compose up -d
+# 3. cambiar el puerto en opciones avanzadas de la extension de sqlserver acá en el editor. eje 11433 y hacer la conexion
+
+# -------------INICIAR Y DETENER CONTENEDORES---------
+# iniciar imagen docker de sqlserver:
+# docker-compose start
+# Detener ejecucion del contenedor de sqlserver:
+# docker-compose stop
