@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
+import { CreateRolDto } from './dto/create-rol.dto';
+import { UpdateRolDto } from './dto/update-rol.dto';
 
 @Injectable()
 export class RolesService {
@@ -8,7 +10,7 @@ export class RolesService {
         private prisma: PrismaService
     ) { }
 
-    async createRole(role: any){
+    async createRole(role: CreateRolDto) {
         return await this.prisma.roles.create({
             data: role
         })
@@ -26,7 +28,7 @@ export class RolesService {
         })
     }
 
-    async updateRole(id: number,role: any) {
+    async updateRole(id: number,role: UpdateRolDto) {
         return await this.prisma.roles.update({
             where: {
                 id: id
