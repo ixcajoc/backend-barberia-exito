@@ -8,6 +8,7 @@ import { AppointmentModule } from './modules/appointments/appointment/appointmen
 import { AppointmentDetailModule } from './modules/appointments/appointment-detail/appointment-detail.module';
 import { AppointmentStatusModule } from './modules/appointments/appointment-status/appointment-status.module';
 import { ProductsModule } from './modules/products/products.module';
+import { BarberServicesModule } from './modules/barber-services/barber-services.module';
 
 @Module({
   imports: [
@@ -16,7 +17,8 @@ import { ProductsModule } from './modules/products/products.module';
     AppointmentModule,
     AppointmentStatusModule,
     AppointmentDetailModule,
-    ProductsModule
+    ProductsModule,
+    BarberServicesModule
   
   ],
   controllers: [AppController],
