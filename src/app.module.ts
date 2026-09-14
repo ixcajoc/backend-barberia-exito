@@ -7,6 +7,7 @@ import "dotenv/config";
 import { AppointmentModule } from './modules/appointments/appointment/appointment.module';
 import { AppointmentDetailModule } from './modules/appointments/appointment-detail/appointment-detail.module';
 import { AppointmentStatusModule } from './modules/appointments/appointment-status/appointment-status.module';
+import { ProductsModule } from './modules/products/products.module';
 
 @Module({
   imports: [
@@ -14,7 +15,8 @@ import { AppointmentStatusModule } from './modules/appointments/appointment-stat
     CategoriesModule,
     AppointmentModule,
     AppointmentStatusModule,
-    AppointmentDetailModule
+    AppointmentDetailModule,
+    ProductsModule
   
   ],
   controllers: [AppController],
