@@ -45,7 +45,10 @@ export class RolesService {
             where: {
                 id: id
             },
-            data: role,
+            data: {
+                ...role,
+                updated_at: new Date()
+            },
         })
 
     }
