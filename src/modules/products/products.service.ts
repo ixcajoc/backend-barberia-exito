@@ -10,10 +10,9 @@ export class ProductsService {
   ) {}
 
   async create(createProductDto: CreateProductDto) {
-    // return await this.prisma.productos.create({
-    //   data: createProductDto
-    // });
-    return 'Product created successfully';
+    return await this.prisma.productos.create({
+      data: createProductDto
+    });
   }
 
   async findAll() {
@@ -27,11 +26,10 @@ export class ProductsService {
   }
 
   async update(id: number, updateProductDto: UpdateProductDto) {
-    // return await this.prisma.productos.update({
-    //   where: { id: id },
-    //   data: updateProductDto
-    // });
-    return 'Product updated successfully';
+    return await this.prisma.productos.update({
+      where: { id: id },
+      data: updateProductDto
+    });
   }
 
   async remove(id: number) {
