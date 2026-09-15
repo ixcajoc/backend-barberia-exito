@@ -20,8 +20,7 @@ import { UsersModule } from './modules/users/users.module';
     AppointmentDetailModule,
     ProductsModule,
     BarberServicesModule,
-    UsersModule,
-    
+    UsersModule,    
   
   ],
   controllers: [AppController],
