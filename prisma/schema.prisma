@@ -1,0 +1,122 @@
+generator client {
+  provider     = "prisma-client"
+  output       = "../src/generated/prisma"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "sqlserver"
+}
+
+model Categorias {
+  id          Int         @id(map: "PK__Categori__3213E83FB4B53FDD") @default(autoincrement())
+  nombre      String      @db.NVarChar(100)
+  descripcion String?     @db.NVarChar(Max)
+  Productos   Productos[]
+  Servicios   Servicios[]
+}
+
+model Citas {
+  id             Int            @id(map: "PK__Citas__3213E83FF68DA3A5") @default(autoincrement())
+  id_usuario     Int?
+  id_estado_cita Int?
+  fecha_inicio   DateTime
+  fecha_fin      DateTime?
+  comentario     String?        @db.NVarChar(1)
+  total          Decimal        @db.Decimal(10, 2)
+  created_at     DateTime?      @default(now(), map: "DF__Citas__created_a__60A75C0F")
+  updated_at     DateTime?
+  Estado_cita    Estado_cita?   @relation(fields: [id_estado_cita], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK__Citas__id_estado__5FB337D6")
+  Usuarios       Usuarios?      @relation(fields: [id_usuario], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK__Citas__id_usuari__5EBF139D")
+  Detalle_cita   Detalle_cita[]
+}
+
+model Configuracion_horario {
+  id          Int       @id(map: "PK__Configur__3213E83F5AFA9489") @default(autoincrement())
+  dia_semana  String?   @db.NVarChar(50)
+  hora_inicio DateTime? @db.Time
+  hora_fin    DateTime? @db.Time
+  activo      Boolean?  @default(true, map: "DF__Configura__activ__74AE54BC")
+}
+
+model Detalle_cita {
+  id              Int        @id(map: "PK__Detalle___3213E83FE9F12D93") @default(autoincrement())
+  id_cita         Int?
+  id_servicio     Int?
+  id_producto     Int?
+  precio_unitario Decimal    @db.Decimal(10, 2)
+  cantidad        Int        @default(1, map: "DF__Detalle_c__canti__6E01572D")
+  subtotal        Decimal    @db.Decimal(18, 0)
+  Citas           Citas?     @relation(fields: [id_cita], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK__Detalle_c__id_ci__6B24EA82")
+  Productos       Productos? @relation(fields: [id_producto], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK__Detalle_c__id_pr__6D0D32F4")
+  Servicios       Servicios? @relation(fields: [id_servicio], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK__Detalle_c__id_se__6C190EBB")
+}
+
+model Dias_no_laborales {
+  id     Int      @id(map: "PK__Dias_no___3213E83F8D6B01FC") @default(autoincrement())
+  fecha  DateTime
+  motivo String?  @db.NVarChar(1)
+}
+
+model Estado_cita {
+  id          Int     @id(map: "PK__Estado_c__3213E83FFB9CE06B") @default(autoincrement())
+  nombre      String  @db.NVarChar(255)
+  descripcion String? @db.NVarChar(255)
+  Citas       Citas[]
+}
+
+model Productos {
+  id           Int            @id(map: "PK__Producto__3213E83F941483A0") @default(autoincrement())
+  nombre       String         @db.VarChar(100)
+  descripcion  String?        @db.VarChar(Max)
+  precio       Decimal        @db.Decimal(10, 2)
+  stock        Int            @default(0, map: "DF__Productos__stock__37A5467C")
+  imagen       Bytes?         @db.Image
+  activo       Boolean?       @default(true, map: "DF__Productos__activ__38996AB5")
+  created_at   DateTime?      @default(now(), map: "DF__Productos__creat__398D8EEE")
+  updated_at   DateTime?      @default(now(), map: "DF__Productos__updat__3A81B327")
+  id_categoria Int?
+  Detalle_cita Detalle_cita[]
+  Categorias   Categorias?    @relation(fields: [id_categoria], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_Productos_Categorias")
+}
+
+model Roles {
+  id          Int        @id(map: "PK__Roles__3213E83F9684BD3A") @default(autoincrement())
+  nombre      String     @db.NVarChar(255)
+  descripcion String?    @db.NVarChar(255)
+  created_at  DateTime?  @default(now(), map: "DF__Roles__created_a__49C3F6B7")
+  updated_at  DateTime?  @default(now(), map: "DF__Roles__updated_a__4AB81AF0")
+  Usuarios    Usuarios[]
+}
+
+model Servicios {
+  id                Int            @id(map: "PK__Servicio__3213E83FB2E3CFF7") @default(autoincrement())
+  id_categoria      Int?
+  nombre            String         @db.NVarChar(255)
+  descripcion       String?        @db.NVarChar(Max)
+  precio            Decimal        @db.Decimal(10, 2)
+  duracion_servicio Int            @default(20, map: "DF__Servicios__durac__66603565")
+  imagen            Bytes?         @db.Image
+  created_at        DateTime?      @default(now(), map: "DF__Servicios__creat__6754599E")
+  updated_at        DateTime?
+  Detalle_cita      Detalle_cita[]
+  Categorias        Categorias?    @relation(fields: [id_categoria], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK__Servicios__id_ca__656C112C")
+}
+
+model Usuarios {
+  id            Int       @id(map: "PK__Usuarios__3213E83F6D59EA41") @default(autoincrement())
+  id_rol        Int?
+  nombre        String    @db.NVarChar(255)
+  apellido      String?   @db.NVarChar(255)
+  username      String?   @db.NVarChar(255)
+  email         String?   @db.NVarChar(255)
+  password_hash String?   @db.NVarChar(255)
+  telefono      String?   @db.NVarChar(255)
+  activo        Boolean?  @default(true, map: "DF__Usuarios__activo__01142BA1")
+  last_logon    DateTime?
+  imagen        Bytes?    @db.Image
+  created_at    DateTime? @default(now(), map: "DF__Usuarios__create__4E88ABD4")
+  updated_at    DateTime?
+  Citas         Citas[]
+  Roles         Roles?    @relation(fields: [id_rol], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK__Usuarios__id_rol__4D94879B")
+}
